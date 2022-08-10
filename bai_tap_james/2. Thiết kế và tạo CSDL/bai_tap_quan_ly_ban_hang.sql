@@ -22,7 +22,7 @@ product_price double
 create table oder_detail(
 oder_id int,
 product_id int,
-oder_qty varchar(45),
+oder_qty int,
 primary key(oder_id,product_id),
 foreign key(oder_id) references oder(oder_id),
 foreign key(product_id) references product(product_id)
