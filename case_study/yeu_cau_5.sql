@@ -1,12 +1,24 @@
 use furama_resort;
-select khach_hang.ma_khach_hang,khach_hang.ho_ten,loai_khach.ten_loai_khach,
-hop_dong.ma_hop_dong,dich_vu.ten_dich_vu,hop_dong.ngay_lam_hop_dong,hop_dong.ngay_ket_thuc,
-ifnull((hop_dong_chi_tiet.so_luong*dich_vu_di_kem.gia),0)+ ifnull(dich_vu.chi_phi_thue,0) as tong_tien
-from khach_hang
-left join loai_khach on loai_khach.ma_loai_khach = khach_hang.ma_loai_khach
-left join hop_dong on hop_dong.ma_khach_hang = khach_hang.ma_khach_hang
-left join dich_vu on dich_vu.ma_dich_vu = hop_dong.ma_dich_vu
-left join hop_dong_chi_tiet on hop_dong_chi_tiet.ma_hop_dong = hop_dong.ma_hop_dong
-left join dich_vu_di_kem on dich_vu_di_kem.ma_dich_vu_di_kem = hop_dong_chi_tiet.ma_dich_vu_di_kem
-group by hop_dong.ngay_lam_hop_dong
+SELECT 
+    kh.ma_khach_hang,
+    kh.ho_ten,
+    lk.ten_loai_khach,
+    hd.ma_hop_dong,
+    dv.ten_dich_vu,
+    hd.ngay_lam_hop_dong,
+    hd.ngay_ket_thuc,
+    IFNULL((hdct.so_luong * dvdk.gia), 0) + IFNULL(dv.chi_phi_thue, 0) AS tong_tien
+FROM
+    khach_hang kh
+        LEFT JOIN
+    loai_khach lk ON lk.ma_loai_khach = kh.ma_loai_khach
+        LEFT JOIN
+    hop_dong hd ON hd.ma_khach_hang = kh.ma_khach_hang
+        LEFT JOIN
+    dich_vu dv ON dv.ma_dich_vu = hd.ma_dich_vu
+        LEFT JOIN
+    hop_dong_chi_tiet hdct ON hdct.ma_hop_dong = hd.ma_hop_dong
+        LEFT JOIN
+    dich_vu_di_kem dvdk ON dvdk.ma_dich_vu_di_kem = hdct.ma_dich_vu_di_kem
+GROUP BY hd.ngay_lam_hop_dong
 ;
